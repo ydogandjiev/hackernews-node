@@ -95,10 +95,35 @@ async function login(root, args, context, info) {
   }
 }
 
+async function vote(root, args, context, info) {
+  const userId = getUserId(context)
+
+  const exists = await context.db.exists.Vote({
+    where: {
+      user: { id: userId },
+      link: { id: args.linkId }
+    }
+  })
+  if (exists) {
+    throw new Error(`Already voted for link: ${args.linkId}`)
+  }
+
+  return context.db.mutation.createVote(
+    {
+      data: {
+        user: { connect: { id: userId } },
+        link: { connect: { id: args.linkId } }
+      }
+    },
+    info
+  )
+}
+
 module.exports = {
   createLink,
   updateLink,
   deleteLink,
   signup,
-  login
+  login,
+  vote
 }
