@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { APP_SECRET, getUserId } = require('../utils')
 
-function createLink(root, args, context, info) {
+function createLink(parent, args, context, info) {
   const userId = getUserId(context)
   return context.db.mutation.createLink(
     {
@@ -16,7 +16,7 @@ function createLink(root, args, context, info) {
   )
 }
 
-async function updateLink(root, args, context, info) {
+async function updateLink(parent, args, context, info) {
   const userId = getUserId(context)
 
   const link = await context.db.query.link(
@@ -41,7 +41,7 @@ async function updateLink(root, args, context, info) {
   )
 }
 
-async function deleteLink(root, args, context, info) {
+async function deleteLink(parent, args, context, info) {
   const userId = getUserId(context)
 
   const link = await context.db.query.link(
@@ -55,7 +55,7 @@ async function deleteLink(root, args, context, info) {
   return context.db.mutation.deleteLink({ where: { id: args.id } }, info)
 }
 
-async function signup(root, args, context, info) {
+async function signup(parent, args, context, info) {
   const password = await bcrypt.hash(args.password, 10)
 
   const user = await context.db.mutation.createUser(
@@ -73,7 +73,7 @@ async function signup(root, args, context, info) {
   }
 }
 
-async function login(root, args, context, info) {
+async function login(parent, args, context, info) {
   const user = await context.db.query.user(
     { where: { email: args.email } },
     `{ id password }`
@@ -95,7 +95,7 @@ async function login(root, args, context, info) {
   }
 }
 
-async function vote(root, args, context, info) {
+async function vote(parent, args, context, info) {
   const userId = getUserId(context)
 
   const exists = await context.db.exists.Vote({
