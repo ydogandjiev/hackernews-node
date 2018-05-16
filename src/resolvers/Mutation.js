@@ -46,12 +46,16 @@ async function deleteLink(parent, args, context, info) {
 
   const link = await context.db.query.link(
     { where: { id: args.id } },
-    `{ postedBy { id } }`
+    `{ postedBy { id } votes { id } }`
   )
   if (link.postedBy.id !== userId) {
     throw new Error("Cannot delete another user's link")
   }
 
+  // Delete all votes associated with the link
+  await context.db.mutation.deleteManyVotes({ where: { OR: link.votes } })
+
+  // Delete the link
   return context.db.mutation.deleteLink({ where: { id: args.id } }, info)
 }
 

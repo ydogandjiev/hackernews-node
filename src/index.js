@@ -6,54 +6,6 @@ const AuthPayload = require('./resolvers/AuthPayload')
 const Subscription = require('./resolvers/Subscription')
 const Feed = require('./resolvers/Feed')
 
-/*
-const resolvers = {
-  Query: {
-    info: () => `This is the API of Hackernews Clone`,
-    feed: (root, args, context, info) => {
-      return context.db.query.links({}, info)
-    }
-  },
-  Mutation: {
-    createLink: (root, args, context, info) => {
-      return context.db.mutation.createLink(
-        {
-          data: {
-            url: args.url,
-            description: args.description
-          }
-        },
-        info
-      )
-    },
-    updateLink: (root, args, context, info) => {
-      return context.db.mutation.updateLink(
-        {
-          where: {
-            id: args.id
-          },
-          data: {
-            url: args.url,
-            description: args.description
-          }
-        },
-        info
-      )
-    },
-    deleteLink: (root, args, context, info) => {
-      return context.db.mutation.deleteLink(
-        {
-          where: {
-            id: args.id
-          }
-        },
-        info
-      )
-    }
-  }
-}
-*/
-
 const resolvers = {
   Query,
   Mutation,
